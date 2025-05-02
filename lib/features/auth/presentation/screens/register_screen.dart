@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:v2g/common/widgets/outlined_text_field.dart';
+import 'package:v2g/common/widgets/neumorphic_button.dart';
+import 'package:v2g/core/utils/theming.dart';
 import 'package:v2g/features/auth/presentation/providers/auth_state.dart';
 import 'package:v2g/features/auth/presentation/providers/auth_viewmodel.dart';
 
@@ -27,94 +30,75 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authViewModelProvider);
-    final authViewModel = ref.read(authViewModelProvider.notifier);
+    final viewModel = ref.read(authViewModelProvider.notifier);
+    final isLoading = authState is Loading;
+    final errorMessage = authState is Error ? authState.problem.detail : null;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Register')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(labelText: 'Username'),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _confirmPasswordController,
-              decoration: const InputDecoration(labelText: 'Confirm Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 24),
-            Builder(
-              builder: (context) {
-                final onPressed = () {
-                  final username = _usernameController.text.trim();
-                  final password = _passwordController.text.trim();
-                  final confirmPassword =
-                      _confirmPasswordController.text.trim();
-
-                  if (password != confirmPassword) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Passwords do not match')),
-                    );
-                    return;
-                  }
-
-                  authViewModel.register(
-                    username: username,
-                    password: password,
-                  );
-                };
-
-                return switch (authState) {
-                  Loading() => const CircularProgressIndicator(),
-                  Error(:final problem) => Column(
-                      children: [
-                        ElevatedButton(
-                          onPressed: onPressed,
-                          child: const Text('Register'),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Error: ${problem.detail}',
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                      ],
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: Column(
+              children: [
+                OutlinedTextField(
+                  controller: _usernameController,
+                  hintText: 'Username',
+                  prefixIcon: Icons.person,
+                ),
+                const SizedBox(height: 12),
+                OutlinedTextField(
+                  controller: _passwordController,
+                  hintText: 'Password',
+                  prefixIcon: Icons.lock,
+                  obscureText: true,
+                ),
+                const SizedBox(height: 12),
+                OutlinedTextField(
+                  controller: _confirmPasswordController,
+                  hintText: 'Confirm Password',
+                  prefixIcon: Icons.lock,
+                  obscureText: true,
+                ),
+                const SizedBox(height: 24),
+                NeumorphicButton(
+                  width: 300,
+                  onPressed: () {
+                    final user = _usernameController.text.trim();
+                    final pass = _passwordController.text.trim();
+                    final confirm = _confirmPasswordController.text.trim();
+                    if (pass != confirm) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Passwords do not match')),
+                      );
+                      return;
+                    }
+                    viewModel.register(username: user, password: pass);
+                  },
+                  isLoading: isLoading,
+                  child: const Text('Register'),
+                ),
+                if (errorMessage != null) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    errorMessage,
+                    style: TextStyle(
+                      color: context.colorScheme.error,
+                      fontWeight: FontWeight.w500,
                     ),
-                  Authenticated(:final response) => ElevatedButton(
-                      onPressed: null,
-                      child: Text('Welcome! ID: ${response.id}'),
-                    ),
-                  Initial() => ElevatedButton(
-                      onPressed: onPressed,
-                      child: const Text('Register'),
-                    ),
-                };
-              },
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+                const SizedBox(height: 24),
+                TextButton(
+                  onPressed: () => context.go('/login'),
+                  child: const Text('Already have an account? Login here'),
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
-            Builder(
-              builder: (context) {
-                return switch (authState) {
-                  Error(:final problem) => Text('Error: ${problem.detail}'),
-                  Authenticated(:final response) =>
-                    Text('Welcome! ID: ${response.id}'),
-                  _ => const SizedBox.shrink(),
-                };
-              },
-            ),
-            TextButton(
-              onPressed: () => context.go('/login'),
-              child: const Text('Already have an account? Login here'),
-            ),
-          ],
+          ),
         ),
       ),
     );

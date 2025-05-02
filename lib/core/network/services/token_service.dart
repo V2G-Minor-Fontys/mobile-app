@@ -8,7 +8,6 @@ import 'package:v2g/core/network/services/itoken_service.dart';
 import 'package:v2g/core/storage/isecure_storage_service.dart';
 import 'package:v2g/core/storage/secure_storage_keys.dart';
 import 'package:v2g/core/storage/secure_storage_service.dart';
-import 'package:v2g/main.dart';
 
 final tokenServiceProvider = ProviderFamily<ITokenService, Dio>((ref, dio) {
   return TokenService(
@@ -25,17 +24,16 @@ final class TokenService implements ITokenService {
 
   @override
   TaskEither<TokenServiceException, String> getAccessToken() {
-    return _secureStorageService.read(accessTokenKey).mapLeft(
+    return _secureStorageService.read(accessTokenKey).mapLeft<TokenServiceException>(
       (e) => TokenMissingException('Failed to read access token: ${e.toString()}'),
     ).flatMap(
       (tokenOption) => tokenOption.match(
-        () => refreshAccessToken().mapLeft((e) => TokenMissingException('Failed to refresh access token: ${e.toString()}')),
+        () => refreshAccessToken().mapLeft<TokenServiceException>((e) => TokenMissingException('Failed to refresh access token: ${e.toString()}')),
         TaskEither.right,           
       ),
     );
   }
 
- 
   @override
   TaskEither<TokenServiceException, String> refreshAccessToken() {
     return TaskEither.tryCatch(() async {
@@ -61,7 +59,6 @@ final class TokenService implements ITokenService {
 
       return token;
     }, (error, _) {
-      globalIsAuthenticated = false;
       return error is TokenServiceException
           ? error
           : TokenRefreshFailedException(error.toString());

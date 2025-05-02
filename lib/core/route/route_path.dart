@@ -1,4 +1,6 @@
-const String baseUrl = 'http://192.168.160.1:8080';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+final baseUrl = dotenv.env['BASE_URL']!;
 const String loginPath = '/api/auth/login';
 const String registerPath = '/api/auth/register';
 const String refreshTokenPath = '/api/auth/token/refresh';

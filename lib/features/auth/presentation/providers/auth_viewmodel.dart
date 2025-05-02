@@ -5,6 +5,8 @@ import 'package:v2g/features/auth/domain/usecases/login_usecase.dart';
 import 'package:v2g/features/auth/domain/usecases/register_usecase.dart';
 import 'package:v2g/features/auth/presentation/providers/auth_state.dart';
 
+
+
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>(
   (ref) => AuthViewModel(ref.read(loginUseCaseProvider), ref.read(registerUseCaseProvider)),
 );
