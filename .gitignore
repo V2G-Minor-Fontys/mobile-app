@@ -1,43 +1,96 @@
-# Miscellaneous
+# -------------------------------
+# Dart / Flutter
+# -------------------------------
+.dart_tool/
+.packages
+.pub/
+.pub-cache/
+.flutter-plugins
+.flutter-plugins-dependencies
+.melos_tool/
+
+# Build outputs
+/build/
+**/build/
+**/ios/Flutter/.last_build_id
+
+# Generated API docs
+doc/api/
+
+# Obfuscation / Symbolication
+app.*.map.json
+app.*.symbols
+
+# -------------------------------
+# Android
+# -------------------------------
+android/.gradle/
+android/app/*.apk
+android/app/*.ap_
+android/app/debug/
+android/app/profile/
+android/app/release/
+*.jks
+*.keystore
+
+# Gradle
+.gradle/
+**/gradle-wrapper.jar
+gradle-wrapper.properties
+gradle-wrapper.jar
+
+# Local properties
+local.properties
+
+# -------------------------------
+# iOS / macOS
+# -------------------------------
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/.symlinks/
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/DerivedData/
+macos/Pods/
+macos/Flutter/ephemeral/
+macos/Runner.xcworkspace/
+
+# Xcode files
+*.xcworkspace
+*.xcuserstate
+*.xcodeproj/
+*.xcassets/
+
+# Provisioning
+*.mobileprovision
+
+# -------------------------------
+# VS Code
+# -------------------------------
+.vscode/
+
+# -------------------------------
+# IntelliJ / Android Studio
+# -------------------------------
+*.iml
+*.ipr
+*.iws
+.idea/
+.idea_modules/
+
+# -------------------------------
+# Misc
+# -------------------------------
 *.class
 *.log
 *.pyc
 *.swp
+*.tmp
+*.temp
 .DS_Store
 .atom/
 .buildlog/
 .history
 .svn/
 migrate_working_dir/
-
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-
-# Symbolication related
-app.*.symbols
-
-# Obfuscation related
-app.*.map.json
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+**/*.env
