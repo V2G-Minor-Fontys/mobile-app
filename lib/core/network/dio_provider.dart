@@ -25,7 +25,6 @@ final dioProvider = Provider<Dio>((ref) {
   dio.interceptors.addAll([
     ProblemDetailsInterceptor(),
     CookieManager(ref.watch(cookieJarProvider)),
-    AuthInterceptor(tokenService),
     LogInterceptor(requestBody: true, responseBody: true)
   ]);
   return dio;

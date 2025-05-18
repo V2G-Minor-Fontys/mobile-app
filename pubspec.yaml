@@ -27,6 +27,7 @@ dependencies:
   json_annotation: ^4.9.0
   cupertino_icons: ^1.0.8
   flutter_dotenv: ^5.2.1
+  fl_chart: ^1.0.0
 
 dev_dependencies:
   retrofit_generator: ^9.1.9
@@ -44,3 +45,14 @@ flutter:
   uses-material-design: true
   assets:
   - .env
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: lib/common/fonts/Montserrat-Regular.ttf
+        - asset: lib/common/fonts/Montserrat-Bold.ttf
+          weight: 700
+        - asset: lib/common/fonts/Montserrat-Italic.ttf
+          style: italic
+        - asset: lib/common/fonts/Montserrat-BoldItalic.ttf
+          style: italic
+          weight: 700

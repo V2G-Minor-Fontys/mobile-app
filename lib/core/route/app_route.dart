@@ -5,7 +5,9 @@ import 'package:v2g/core/network/providers/initial_auth_status_provider.dart';
 import 'package:v2g/core/route/route_path.dart';
 import 'package:v2g/features/auth/presentation/screens/login_screen.dart';
 import 'package:v2g/features/auth/presentation/screens/register_screen.dart';
+import 'package:v2g/features/automation/presentation/screens/automation_screen.dart';
 import 'package:v2g/features/home/presentation/screens/home_screen.dart';
+import 'package:v2g/features/settings/presentation/screens/settings_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final initialAuthStatus = ref.watch(initialAuthStatusProvider);
@@ -14,7 +16,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/login',
-        name: loginPath,
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
@@ -23,22 +24,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/register',
-        name: registerPath,
         builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/automation',
+        builder: (context, state) => const AutomationListScreen(),
       )
     ],
-    redirect: (context, state) {
-      final isLoggedIn = ref.watch(isUserAuthenticatedProvider);
-      if (initialAuthStatus == true) {
-        return null;
-      }
 
-      return isLoggedIn
-          ? '/home'
-          : state.matchedLocation == '/login' ||
-                  state.matchedLocation == '/register'
-              ? null
-              : '/login';
-    },
   );
 }, dependencies: [initialAuthStatusProvider]);

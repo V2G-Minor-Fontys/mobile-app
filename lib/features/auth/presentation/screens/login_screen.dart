@@ -7,7 +7,6 @@ import 'package:v2g/common/widgets/styled_text_button.dart';
 import 'package:v2g/core/utils/theming.dart';
 import 'package:v2g/features/auth/presentation/providers/auth_state.dart';
 import 'package:v2g/features/auth/presentation/providers/auth_viewmodel.dart';
-import 'package:v2g/main.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -65,7 +64,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onPressed: () {
                     final username = _usernameController.text.trim();
                     final password = _passwordController.text.trim();
-                    authViewModel.login(username: username, password: password);
+                    context.go('/home');
                   },
                 ),
                 const SizedBox(height: 12),

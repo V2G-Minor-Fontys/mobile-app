@@ -46,6 +46,8 @@ class AppTheme {
       ),
     ),
     textTheme: Typography.blackMountainView,
+    fontFamily: 'Montserrat',
+
     iconTheme: const IconThemeData(color: AppColors.onSurface),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -86,7 +88,23 @@ class AppTheme {
         borderSide: BorderSide.none,
       ),
     ),
-    textTheme: Typography.whiteMountainView,
+    textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontSize: 120.0,
+            fontWeight: FontWeight.w300,
+            color: Color(0xFF555555),
+          ),
+          displayMedium: TextStyle(
+            fontSize: 50.0,
+            fontWeight: FontWeight.w300,
+            color: Color(0xFF555555),
+          ),
+          bodyLarge: TextStyle(
+            fontSize: 16.0,
+            color: Colors.white70,
+          ),
+        ),
+    fontFamily: 'Montserrat',
     iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
