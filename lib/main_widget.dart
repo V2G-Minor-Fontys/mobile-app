@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:v2g/core/network/providers/initial_auth_status_provider.dart';
 import 'package:v2g/core/route/app_route.dart';
-import 'package:v2g/core/utils/theming.dart';
 
 class MainWidget extends StatelessWidget {
   final bool isAuthenticated;
@@ -25,10 +25,20 @@ class _MainWidgetRouter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp.router(
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
+    return ShadApp.router(
       themeMode: ThemeMode.system,
+      darkTheme: ShadThemeData(
+          textTheme: ShadTextTheme(
+            family: "Montserrat",
+          ),
+          colorScheme: const ShadZincColorScheme.dark(),
+          brightness: Brightness.dark),
+      theme: ShadThemeData(
+          textTheme: ShadTextTheme(
+            family: "Montserrat",
+          ),
+          colorScheme: const ShadZincColorScheme.light(),
+          brightness: Brightness.light),
       debugShowCheckedModeBanner: false,
       routerConfig: ref.watch(goRouterProvider),
     );

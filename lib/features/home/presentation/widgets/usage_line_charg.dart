@@ -11,7 +11,7 @@ class UsageLineChart extends StatelessWidget {
           drawVerticalLine: true,
           drawHorizontalLine: true,
           horizontalInterval: 2,
-          verticalInterval: 6, // Less vertical lines
+          verticalInterval: 6,
           getDrawingHorizontalLine: (value) {
             return FlLine(
               color: Colors.grey.withOpacity(0.2),
@@ -179,7 +179,7 @@ class UsageLineChart extends StatelessWidget {
                 String unit = ' kW';
                 Color color;
                 String name;
-                
+
                 if (spot.barIndex == 0) {
                   color = Colors.green;
                   name = 'Home';
@@ -190,7 +190,7 @@ class UsageLineChart extends StatelessWidget {
                   color = Colors.blue;
                   name = 'Grid';
                 }
-                
+
                 return LineTooltipItem(
                   '$name: ${spot.y.toStringAsFixed(1)}$unit',
                   TextStyle(color: color, fontWeight: FontWeight.bold),

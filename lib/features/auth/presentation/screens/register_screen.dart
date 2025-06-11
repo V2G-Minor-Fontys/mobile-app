@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:v2g/common/widgets/outlined_text_field.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:v2g/common/widgets/neumorphic_button.dart';
+import 'package:v2g/common/widgets/outlined_text_field.dart';
+import 'package:v2g/common/widgets/styled_text_button.dart';
 import 'package:v2g/core/utils/theming.dart';
 import 'package:v2g/features/auth/presentation/providers/auth_state.dart';
 import 'package:v2g/features/auth/presentation/providers/auth_viewmodel.dart';
@@ -17,90 +19,116 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+  final formKey = GlobalKey<ShadFormState>();
 
   @override
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authViewModelProvider);
-    final viewModel = ref.read(authViewModelProvider.notifier);
+    final authViewModel = ref.read(authViewModelProvider.notifier);
+
     final isLoading = authState is Loading;
     final errorMessage = authState is Error ? authState.problem.detail : null;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 400),
+        body: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: ShadCard(
+          padding: const EdgeInsets.all(24),
+          child: ShadForm(
+            key: formKey,
             child: Column(
-              children: [
-                OutlinedTextField(
-                  controller: _usernameController,
-                  hintText: 'Username',
-                  prefixIcon: Icons.person,
-                ),
-                const SizedBox(height: 12),
-                OutlinedTextField(
-                  controller: _passwordController,
-                  hintText: 'Password',
-                  prefixIcon: Icons.lock,
-                  obscureText: true,
-                ),
-                const SizedBox(height: 12),
-                OutlinedTextField(
-                  controller: _confirmPasswordController,
-                  hintText: 'Confirm Password',
-                  prefixIcon: Icons.lock,
-                  obscureText: true,
-                ),
-                const SizedBox(height: 24),
-                NeumorphicButton(
-                  width: 300,
-                  onPressed: () {
-                    final user = _usernameController.text.trim();
-                    final pass = _passwordController.text.trim();
-                    final confirm = _confirmPasswordController.text.trim();
-                    if (pass != confirm) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Passwords do not match')),
-                      );
-                      return;
-                    }
-                    viewModel.register(username: user, password: pass);
-                  },
-                  isLoading: isLoading,
-                  child: const Text('Register'),
-                ),
-                if (errorMessage != null) ...[
-                  const SizedBox(height: 12),
-                  Text(
-                    errorMessage,
-                    style: TextStyle(
-                      color: context.colorScheme.error,
-                      fontWeight: FontWeight.w500,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Center(
+                    child: Text(
+                      "Register",
+                      style: ShadTheme.of(context).textTheme.h1,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                ],
-                const SizedBox(height: 24),
-                TextButton(
-                  onPressed: () => context.go('/login'),
-                  child: const Text('Already have an account? Login here'),
-                ),
-              ],
-            ),
+                  const SizedBox(height: 16),
+                  ShadInputFormField(
+                    controller: _usernameController,
+                    label: const Text("Username"),
+                    placeholder: const Text("Enter your username"),
+                    validator: (v) {
+                      if (v.length < 3) {
+                        return "Username must be at least 3 characters long";
+                      }
+
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  ShadInputFormField(
+                    controller: _passwordController,
+                    label: const Text("Password"),
+                    placeholder: const Text("Enter your password"),
+                    obscureText: true,
+                    validator: (v) {
+                      if (v.length < 6) {
+                        return "Password must be at least 6 characters long";
+                      }
+
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  ShadButton(
+                    width: double.infinity,
+                    child: isLoading
+                        ? CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: ShadTheme.of(context)
+                                .colorScheme
+                                .primaryForeground,
+                          )
+                        : const Text("Register"),
+                    onPressed: () {
+                      if (formKey.currentState!.saveAndValidate()) {
+                      
+                        context.go("/home");
+                      } else {
+                        ShadToaster.of(context).show(ShadToast.destructive(
+                          title: const Text("Failed to logged in"),
+                          description: const Text(
+                              "You have nottttt successfully logged in."),
+                          action: ShadButton.outline(
+                            child: const Text("Continue"),
+                            onPressed: () => ShadToaster.of(context).hide(),
+                          ),
+                        ));
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Already have an account?",
+                            style: ShadTheme.of(context).textTheme.muted),
+                        const SizedBox(width: 8),
+                        Text("Login!",
+                            style: ShadTheme.of(context)
+                                .textTheme
+                                .muted
+                                .copyWith(decoration: TextDecoration.underline))
+                      ],
+                    ),
+                  )
+                ]),
           ),
         ),
       ),
-    );
+    ));
   }
 }

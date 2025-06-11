@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:v2g/features/automation/application/providers/automation_provider.dart';
 import 'package:v2g/features/automation/domain/automation.dart';
 
@@ -172,7 +173,6 @@ class _AutomationBuilderScreenState
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // RULE TYPE
                       DropdownButton<RuleType>(
                         value: rule.type,
                         items: RuleType.values.map((rt) {
@@ -200,7 +200,6 @@ class _AutomationBuilderScreenState
 
                       const SizedBox(width: 10),
 
-                      // OPERATOR
                       DropdownButton<ConditionOperator>(
                         value: rule.operator,
                         items: ruleOperators[rule.type]!.map((op) {
@@ -226,7 +225,6 @@ class _AutomationBuilderScreenState
 
                       const SizedBox(width: 10),
 
-                      // VALUE
                       DropdownButton<String>(
                         value: rule.value,
                         items: ruleValues[rule.type]!.map((val) {
@@ -252,7 +250,6 @@ class _AutomationBuilderScreenState
 
                       const SizedBox(width: 10),
 
-                      // REMOVE BUTTON
                       if (automation.rules.length > 1)
                         IconButton(
                           icon: const Icon(Icons.delete),
@@ -267,7 +264,7 @@ class _AutomationBuilderScreenState
             }),
             const SizedBox(height: 10),
             const SizedBox(height: 10),
-            ElevatedButton(
+            ShadButton(
               onPressed: notifier.addRule,
               child: const Text("+ Add Condition"),
             ),
@@ -285,7 +282,17 @@ class _AutomationBuilderScreenState
               onChanged: notifier.updateAction,
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
+            ShadCheckbox(
+              label: Text("Activate Automation"),
+              value: automation.isActive,
+              onChanged: (value) {
+                setState(() {
+                  automation.isActive = value;
+                });
+                            },
+            ),
+            const SizedBox(height: 20),
+            ShadButton(
               onPressed: () {
                 final isEdit = widget.indexToUpdate != null;
                 if (isEdit) {

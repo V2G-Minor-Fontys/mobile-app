@@ -38,10 +38,12 @@ class Rule {
 class Automation {
   List<Rule> rules;
   ActionType action;
+  bool isActive = false;
 
   Automation({
     required this.rules,
     required this.action,
+    this.isActive = false,
   });
 }
 
