@@ -48,7 +48,9 @@ The V2G app includes the following features:
    flutter pub get
    ```
 
-3. Run the app:
+3. Create a .env file in the root directory (see .example.env)
+4. Run the app and the server and database in <https://github.com/V2G-Minor-Fontys/server>:
+
    ```bash
    flutter run
    ```
