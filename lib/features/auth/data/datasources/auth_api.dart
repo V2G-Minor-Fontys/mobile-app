@@ -4,8 +4,8 @@ import 'package:retrofit/retrofit.dart';
 import 'package:v2g/core/network/dio_provider.dart';
 import 'package:v2g/core/route/route_path.dart';
 import 'package:v2g/features/auth/data/models/request/login_request.dart';
-import 'package:v2g/features/auth/data/models/response/authentication_response.dart';
 import 'package:v2g/features/auth/data/models/request/register_request.dart';
+import 'package:v2g/features/auth/data/models/response/authentication_response.dart';
 
 part 'auth_api.g.dart';
 
@@ -14,7 +14,7 @@ final authApiProvider = Provider<AuthApi>((ref) {
 });
 
 @RestApi()
-abstract class AuthApi{
+abstract class AuthApi {
   factory AuthApi(Dio dio, {String baseUrl}) = _AuthApi;
 
   @POST(registerPath)

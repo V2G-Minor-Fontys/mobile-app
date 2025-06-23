@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:v2g/common/widgets/neumorphic_button.dart';
-import 'package:v2g/common/widgets/outlined_text_field.dart';
-import 'package:v2g/common/widgets/styled_text_button.dart';
-import 'package:v2g/core/utils/theming.dart';
 import 'package:v2g/features/auth/presentation/providers/auth_state.dart';
 import 'package:v2g/features/auth/presentation/providers/auth_viewmodel.dart';
 
@@ -94,13 +90,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         : const Text("Login"),
                     onPressed: () {
                       if (formKey.currentState!.saveAndValidate()) {
-                      
                         context.go("/home");
                       } else {
                         ShadToaster.of(context).show(ShadToast.destructive(
                           title: const Text("Failed to logged in"),
                           description: const Text(
-                              "You have nottttt successfully logged in."),
+                              "You have not successfully logged in."),
                           action: ShadButton.outline(
                             child: const Text("Continue"),
                             onPressed: () => ShadToaster.of(context).hide(),

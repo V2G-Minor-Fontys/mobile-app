@@ -1,6 +1,7 @@
 with import <nixpkgs> { };
 let
   gtk = gtk3;
+  home = builtins.getEnv "HOME";
   android = pkgs.androidenv.composeAndroidPackages {
     toolsVersion = "26.1.1";
     platformToolsVersion = "33.0.3";
@@ -17,11 +18,9 @@ in mkShell {
   PKG_CONFIG_PATH = "${gtk.dev}/lib/pkgconfig:${gtk.out}/lib/pkgconfig";
   LD_LIBRARY_PATH = "${pkgs.glib.out}/lib:$LD_LIBRARY_PATH";
 
-  # ANDROID_HOME = "${android.androidsdk}/libexec/android-sdk";
-  # ANDROID_SDK_ROOT = "${android.androidsdk}/libexec/android-sdk";
-  ANDROID_HOME = "/home/alex/.android-sdk";
+  ANDROID_HOME = "${home}/.android-sdk";
   QT_QPA_PLATFORM = "xcb";
-  ANDROID_SDK_ROOT = "/home/alex/.android-sdk";
+  ANDROID_SDK_ROOT = "${home}/.android-sdk";
   NIXPKGS_ACCEPT_ANDROID_SDK_LICENSE = 1;
   NIXPKGS_ALLOW_UNFREE = 1;
 }

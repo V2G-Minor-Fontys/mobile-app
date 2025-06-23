@@ -1,9 +1,14 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:v2g/features/automation/domain/automation.dart';
 
 class AutomationListNotifier extends StateNotifier<List<Automation>> {
-  AutomationListNotifier() : super([]);
+  AutomationListNotifier() : super([]) {
+    fetch();
+  }
+
+  Future<void> fetch() async {
+    try {} catch (e) {}
+  }
 
   void add(Automation automation) {
     state = [...state, automation];
@@ -17,6 +22,13 @@ class AutomationListNotifier extends StateNotifier<List<Automation>> {
 
   void delete(int index) {
     state = [...state]..removeAt(index);
+  }
+
+  void reorder(int oldIndex, int newIndex) {
+    final list = [...state];
+    final item = list.removeAt(oldIndex);
+    list.insert(newIndex, item);
+    state = list;
   }
 }
 
